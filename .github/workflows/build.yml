@@ -1,0 +1,71 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - "*"
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Release]
+        platform: [x64]
+
+    runs-on: windows-latest
+
+    env:
+      SOLUTION: ReadyOrNotOpenMic.sln
+      CREATE_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    # Add MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+
+    # Add the Windows Community Toolkit Labs NuGet package source
+    - name: Add NuGet package source
+      run: dotnet nuget add source --name "Windows Community Toolkit Labs" "https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json"
+
+    # Restore the project
+    - name: Restore
+      run: msbuild $env:SOLUTION /t:Restore /p:Platform=$env:Platform /p:Configuration=$env:Configuration
+      env:
+        Platform: ${{ matrix.platform }}
+        Configuration: ${{ matrix.configuration }}
+
+    # Build the solution
+    - name: Build
+      run: msbuild $env:SOLUTION /t:Build /p:Configuration=$env:Configuration /p:Platform=$env:Platform /p:OutputPath=.\\Build
+      env:
+        Platform: ${{ matrix.platform }}
+        Configuration: ${{ matrix.configuration }}
+
+    # Zip the build folder
+    - name: Create archive
+      uses: vimtor/action-zip@v1
+      if: env.CREATE_RELEASE == 'true'
+      with:
+        files: Build/
+        dest: ReadyOrNotOpenMic.zip
+
+    # Create a GitHub release
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      if: env.CREATE_RELEASE == 'true'
+      with:
+        files: ReadyOrNotOpenMic.zip

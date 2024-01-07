@@ -1,0 +1,8 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <x:String x:Key="AppTitleName">Ready Or Not Open Mic</x:String>
+    <x:String x:Key="GitHubRepository">r-o-b-o-t-o/ready-or-not-open-mic</x:String>
+    <x:String x:Key="Copyright">© 2023 Axel Cocat</x:String>
+</ResourceDictionary>

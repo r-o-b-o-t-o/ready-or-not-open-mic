@@ -1,0 +1,115 @@
+<Page
+    x:Class="ReadyOrNotOpenMic.UI.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ReadyOrNotOpenMic.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--  Spacing between cards  -->
+        <x:Double x:Key="SettingsCardSpacing">4</x:Double>
+
+        <!--  Style (inc. the correct spacing) of a section header  -->
+        <Style
+            x:Key="SettingsSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+            TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="2,28,0,4" />
+            </Style.Setters>
+        </Style>
+
+        <!--  Style for the first header section (no top margin)  -->
+        <Style
+            x:Key="SettingsFirstSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+            TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="2,0,0,4" />
+            </Style.Setters>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel Spacing="{StaticResource SettingsCardSpacing}">
+            <!-- Appearance & behavior -->
+            <TextBlock Style="{StaticResource SettingsFirstSectionHeaderTextBlockStyle}" Text="Appearance &amp; behavior" />
+            <labs:SettingsCard Description="Select which app theme to display" Header="App theme">
+                <labs:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE790;" />
+                </labs:SettingsCard.HeaderIcon>
+                <ComboBox x:Name="ComboTheme" SelectionChanged="ComboTheme_SelectionChanged">
+                    <ComboBoxItem Content="Light" Tag="Light" />
+                    <ComboBoxItem Content="Dark" Tag="Dark" />
+                    <ComboBoxItem Content="Use system setting" Tag="Default" />
+                </ComboBox>
+            </labs:SettingsCard>
+
+            <!-- About -->
+            <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
+            <labs:SettingsExpander Description="{StaticResource Copyright}" Header="{ThemeResource AppTitleName}">
+                <labs:SettingsExpander.HeaderIcon>
+                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Logo.png" />
+                </labs:SettingsExpander.HeaderIcon>
+                <TextBlock
+                        Margin="0,-2,0,0"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        IsTextSelectionEnabled="True"
+                        Text="{x:Bind Version}" />
+                <labs:SettingsExpander.Items>
+                    <labs:SettingsCard
+                            Click="CardSettingsDir_Click"
+                            Header="Settings directory"
+                            IsClickEnabled="True">
+                        <labs:SettingsCard.ActionIcon>
+                            <FontIcon Glyph="&#xE8B7;" ToolTipService.ToolTip="Open in Explorer" />
+                        </labs:SettingsCard.ActionIcon>
+                    </labs:SettingsCard>
+
+                    <labs:SettingsCard
+                            Click="CardRepository_Click"
+                            Header="Source repository"
+                            IsClickEnabled="True">
+                        <labs:SettingsCard.ActionIcon>
+                            <FontIcon Glyph="&#xE8A7;" ToolTipService.ToolTip="Open in browser" />
+                        </labs:SettingsCard.ActionIcon>
+                        <TextBlock
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind GitHubRepository}"/>
+                    </labs:SettingsCard>
+
+                    <labs:SettingsCard
+                                Click="CardNewIssue_Click"
+                                Header="File a bug or suggest a new feature"
+                                IsClickEnabled="True">
+                        <labs:SettingsCard.ActionIcon>
+                            <FontIcon Glyph="&#xE8A7;" ToolTipService.ToolTip="Open in browser" />
+                        </labs:SettingsCard.ActionIcon>
+                    </labs:SettingsCard>
+
+                    <labs:SettingsCard
+                            HorizontalContentAlignment="Left"
+                            ContentAlignment="Vertical"
+                            Header="Dependencies">
+                        <StackPanel Margin="-12,0,0,0" Orientation="Vertical">
+                            <HyperlinkButton Content="{x:Bind WinAppSdkRuntimeDetails}" NavigateUri="https://aka.ms/windowsappsdk" />
+                            <HyperlinkButton Content="Windows UI Library" NavigateUri="https://aka.ms/winui" />
+                            <HyperlinkButton Content="Windows Community Toolkit" NavigateUri="https://github.com/CommunityToolkit/WindowsCommunityToolkit" />
+                        </StackPanel>
+                    </labs:SettingsCard>
+
+                    <labs:SettingsCard
+                            HorizontalContentAlignment="Left"
+                            ContentAlignment="Vertical"
+                            Header="THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+                            FontSize="11">
+                    </labs:SettingsCard>
+                </labs:SettingsExpander.Items>
+            </labs:SettingsExpander>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

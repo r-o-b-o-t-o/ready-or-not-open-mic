@@ -1,0 +1,109 @@
+<Page
+    x:Class="ReadyOrNotOpenMic.UI.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ReadyOrNotOpenMic.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="OnLoaded">
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint1280Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="GridContent.Margin" Value="{StaticResource NavigationViewPageContentMargin}" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="MediumLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="GridContent.Margin" Value="{StaticResource NavigationViewPageContentMarginMedium}" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="SmallLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="GridContent.Margin" Value="{StaticResource NavigationViewPageContentMarginSmall}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid x:Name="AppTitleBar"
+              Canvas.ZIndex="1"
+              Height="{Binding ElementName=NavView, Path=CompactPaneLength}"
+              IsHitTestVisible="True"
+              VerticalAlignment="Top">
+            <Image Source="/Assets/Logo.png"
+                   HorizontalAlignment="Left"
+                   Width="16"
+                   Height="16" />
+            <TextBlock x:Name="AppTitleBarText"
+                       VerticalAlignment="Center"
+                       TextWrapping="NoWrap"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Margin="28,0,0,0"
+                       Text="{ThemeResource AppTitleName}" />
+        </Grid>
+
+        <NavigationView
+                x:Name="NavView"
+                Canvas.ZIndex="0"
+                IsBackButtonVisible="Visible"
+                IsSettingsVisible="True"
+                ExpandedModeThresholdWidth="{StaticResource Breakpoint1280Plus}"
+                IsBackEnabled="{x:Bind IsBackEnabled, Mode=OneWay}"
+                SelectedItem="{x:Bind NavigationSelectedItem, Mode=OneWay}"
+                Loaded="NavView_Loaded"
+                Unloaded="NavView_Unloaded"
+                DisplayModeChanged="NavView_DisplayModeChanged"
+                ItemInvoked="NavView_ItemInvoked"
+                BackRequested="NavView_BackRequested">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Home" Tag="ReadyOrNotOpenMic.UI.HomePage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Grid x:Name="GridContent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" x:Name="NavViewHeader"
+                           Text="{x:Bind NavigationSelectedItem.Content, Mode=OneWay}"
+                           Style="{StaticResource TitleTextBlockStyle}" />
+                <Frame Grid.Row="1" x:Name="FrameContent" Margin="0,16,0,16" />
+            </Grid>
+        </NavigationView>
+
+        <TeachingTip Title="{x:Bind NotificationTitle, Mode=OneWay}"
+                         IsLightDismissEnabled="True" CloseButtonContent="Ok"
+                         IsOpen="{x:Bind IsNotificationOpen, Mode=OneWay}" Closed="Notification_Closed"
+                         x:Name="Notification">
+            <TeachingTip.IconSource>
+                <FontIconSource />
+            </TeachingTip.IconSource>
+
+            <TeachingTip.Content>
+                <TextBlock Margin="0,8,0,0" Text="{x:Bind NotificationBody, Mode=OneWay}" />
+            </TeachingTip.Content>
+        </TeachingTip>
+    </Grid>
+</Page>

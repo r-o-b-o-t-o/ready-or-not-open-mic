@@ -1,0 +1,52 @@
+name: Bug report
+description: Create a bug report to help us improve
+labels:
+    - bug
+body:
+    -
+        type: markdown
+        attributes:
+            value: >
+                Thank you for taking the time to fill out a bug report.
+                Remember to fill out all required fields, including the title above.
+    -
+        type: textarea
+        id: current
+        attributes:
+            label: Current Behaviour
+            description: >
+                Describe the problem or bug that you are encountering.
+                If applicable, add screenshots, images, or videos to help explain your problem.
+        validations:
+            required: true
+    -
+        type: textarea
+        id: expected
+        attributes:
+            label: Expected behaviour
+            description: |
+                What should happen instead?
+        validations:
+            required: false
+    -
+        type: textarea
+        id: reproduce
+        attributes:
+            label: Reproduction steps
+            description: |
+                What does someone else need to do to encounter the same bug?
+            placeholder: |
+                1. Step 1
+                2. Step 2
+                3. Step 3
+        validations:
+            required: true
+    -
+        type: textarea
+        id: commit
+        attributes:
+            label: Version
+            description: >
+                Which version of the project are you using?
+        validations:
+            required: true

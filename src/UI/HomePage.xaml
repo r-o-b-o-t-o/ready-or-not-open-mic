@@ -1,0 +1,73 @@
+<Page
+    x:Class="ReadyOrNotOpenMic.UI.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ReadyOrNotOpenMic.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:localconverters="using:ReadyOrNotOpenMic.UI.Converters"
+    mc:Ignorable="d"
+    x:Name="Page"
+    NavigationCacheMode="Required"
+    Loaded="Page_Loaded"
+    KeyDown="Page_KeyDown">
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <localconverters:VirtualKeyToStringConverter x:Key="VirtualKeyToStringConverter" />
+        <localconverters:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverter" />
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel Orientation="Vertical">
+            <Grid Margin="4,8,4,8">
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0">Push to Talk Key:</TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           Text="{x:Bind Cfg.Settings.PushToTalkKey, Converter={StaticResource VirtualKeyToStringConverter}, Mode=OneWay}" />
+                <TextBlock Visibility="{x:Bind IsWaitingForKeyPushToTalk, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                           Grid.Row="0" Grid.Column="2" Margin="12,0,12,0" VerticalAlignment="Center">
+                    Waiting for key...
+                </TextBlock>
+                <Button Grid.Row="0" Grid.Column="3" Command="{x:Bind BindPushToTalkCommand}"
+                        Padding="4" x:Name="BtnAssignPushToTalk">
+                    Click to Assign
+                </Button>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,4,0,0">Toggle Open Mic Key:</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,4,0,0"
+                           Text="{x:Bind Cfg.Settings.ToggleOpenMicKey, Converter={StaticResource VirtualKeyToStringConverter}, Mode=OneWay}" />
+                <TextBlock Visibility="{x:Bind IsWaitingForKeyToggleOpenMic, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                           Grid.Row="1" Grid.Column="2" Margin="12,4,12,0" VerticalAlignment="Center">
+                    Waiting for key...
+                </TextBlock>
+                <Button Grid.Row="1" Grid.Column="3" Command="{x:Bind BindToggleOpenMicCommand}"
+                        Padding="4" x:Name="BtnAssignOpenMic" Margin="0,4,0,0">
+                    Click to Assign
+                </Button>
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <TextBlock Margin="0,0,4,0">Hook installed:</TextBlock>
+                <TextBlock Visibility="{x:Bind App.HookInstalled, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" Foreground="Green">yes</TextBlock>
+                <TextBlock Visibility="{x:Bind App.HookInstalled, Converter={StaticResource BoolToInvisibilityConverter}, Mode=OneWay}" Foreground="DarkRed">no</TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <TextBlock Visibility="{x:Bind App.MicKeyPushed, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">Microphone open</TextBlock>
+                <TextBlock Visibility="{x:Bind App.MicKeyPushed, Converter={StaticResource BoolToInvisibilityConverter}, Mode=OneWay}">Microphone inactive</TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
