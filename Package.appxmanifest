@@ -9,7 +9,7 @@
   <Identity
     Name="b7f0284a-8135-4023-80f4-69c97a2db9df"
     Publisher="CN=Roboto"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <Properties>
     <DisplayName>ReadyOrNotOpenMic</DisplayName>
